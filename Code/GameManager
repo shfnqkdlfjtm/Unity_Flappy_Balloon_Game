@@ -1,0 +1,50 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class GameManager : MonoBehaviour
+{
+    public float pipeTime = 2f;
+    public float pipeMin = -1f;
+    public float pipeMax = 1f;
+
+    public GameObject pipePrefab;
+
+    static public int score = 0;
+    static public int bestScore = 0;
+
+    public Text ScoreText;
+
+    private void Start()
+    {
+        StartCoroutine(PipeStart());
+    }
+
+    private void Update()
+    {
+        ScoreText.text = score.ToString();
+    }
+
+    IEnumerator PipeStart()
+    {
+        do
+        {
+            Instantiate(pipePrefab, new Vector3(3.5f, Random.Range(pipeMin, pipeMax), 0), Quanternion.Euler(new Vector3(0, 0, 0)));
+            yield return new WaitForSeconds(pipeTime);
+        }
+        while (true);
+    }
+    public GameObject startPanel;
+    public GameObject player;
+
+    public void startBtn()
+    {
+        playerDie = false;
+        StartCoroutine(PipeStart());
+        startPanel.SetActive(false);
+        player.GetComponenet<Rigidbody2D>().simulater = true;
+        player.SetActive(true);
+    }
+}
