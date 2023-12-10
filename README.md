@@ -21,7 +21,7 @@ Play 버튼을 누르면 게임이 시작한다.
 ### 종료화면
 풍선이 파이프에 닿거나 바닥에 닿으면 게임이 종료된다.
 
-![종료화면](https://github.com/shfnqkdlfjtm/Unity_Flappy_Balloon_Game/assets/144716487/abfd756b-8ee5-443a-9bbe-54949fbb080e)
+![종료](https://github.com/shfnqkdlfjtm/Unity_Flappy_Balloon_Game/assets/144716487/6728c88c-128e-4883-ae46-8afa72f5ad01)
 
 ## 개발환경
 Unity 2018.2.14f1 (64-bit)
