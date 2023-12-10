@@ -3,48 +3,63 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class GameManager : MonoBehaviour
 {
+    // 정적 변수로 플레이어의 사망 여부를 나타냄
+    static public bool playerDie = false;
+
+    // 파이프 생성 간격과 위치에 관한 변수들
     public float pipeTime = 2f;
     public float pipeMin = -1f;
     public float pipeMax = 1f;
 
+    // 파이프 프리팹
     public GameObject pipePrefab;
 
+    // 현재 스코어와 최고 스코어를 나타내는 정적 변수들
     static public int score = 0;
     static public int bestScore = 0;
 
+    // UI에서 현재 스코어를 표시하기 위한 텍스트 UI 요소
     public Text ScoreText;
 
     private void Start()
     {
+        // 파이프 생성을 위한 코루틴 시작
         StartCoroutine(PipeStart());
     }
 
     private void Update()
     {
+        // UI에 현재 스코어 표시
         ScoreText.text = score.ToString();
     }
 
+    // 파이프 생성을 담당하는 코루틴
     IEnumerator PipeStart()
     {
+        // 플레이어가 사망할 때까지 계속해서 파이프 생성
         do
         {
-            Instantiate(pipePrefab, new Vector3(3.5f, Random.Range(pipeMin, pipeMax), 0), Quanternion.Euler(new Vector3(0, 0, 0)));
+            // 지정된 위치와 각도로 파이프 생성
+            Instantiate(pipePrefab, new Vector3(3.5f, Random.Range(pipeMin, pipeMax), 0), Quaternion.Euler(new Vector3(0, 0, 0)));
+            // 일정 시간 동안 대기
             yield return new WaitForSeconds(pipeTime);
         }
-        while (true);
+        while (!playerDie);
     }
+
+    // 게임 시작 버튼이 눌렸을 때 호출되는 메서드
     public GameObject startPanel;
     public GameObject player;
-
     public void startBtn()
     {
+        // 게임 초기화
         playerDie = false;
         StartCoroutine(PipeStart());
         startPanel.SetActive(false);
-        player.GetComponenet<Rigidbody2D>().simulater = true;
+        // 플레이어의 Rigidbody2D를 활성화하여 물리 시뮬레이션에 참여
+        player.GetComponent<Rigidbody2D>().simulated = true;
         player.SetActive(true);
     }
 }
