@@ -6,19 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class EndPanelManager : MonoBehaviour
 {
+    // 게임 종료 시 표시할 현재 스코어, 최고 스코어, 새로운 이미지, 메달 등을 위한 변수들
     public Text Score;
-    public Text BesScore;
-
+    public Text BestScore;
     public GameObject newImage;
     public GameObject medal;
     public Sprite gold_m;
     public Sprite silver_m;
     public Sprite bronze_m;
 
+    // 이 스크립트가 활성화될 때 호출되는 메서드
     public void OnEnable()
     {
+        // 현재 스코어를 UI에 표시
         Score.text = GameManager.score.ToString();
 
+        // 최고 스코어를 갱신하고, 새로운 이미지를 활성화 또는 비활성화
         if (GameManager.bestScore < GameManager.score)
         {
             GameManager.bestScore = GameManager.score;
@@ -29,8 +32,10 @@ public class EndPanelManager : MonoBehaviour
             newImage.SetActive(false);
         }
 
+        // 최고 스코어를 UI에 표시
         BestScore.text = GameManager.bestScore.ToString();
 
+        // 스코어에 따라 메달 이미지를 설정
         if (GameManager.score >= 10)
         {
             medal.GetComponent<Image>().sprite = gold_m;
@@ -44,8 +49,11 @@ public class EndPanelManager : MonoBehaviour
             medal.GetComponent<Image>().sprite = bronze_m;
         }
     }
+
+    // "확인" 버튼이 눌렸을 때 호출되는 메서드
     public void okBtn()
     {
+        // 게임 매니저의 스코어를 초기화하고, 씬을 다시 불러옴
         GameManager.score = 0;
         SceneManager.LoadScene("SampleScene");
     }
