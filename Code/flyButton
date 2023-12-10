@@ -4,17 +4,27 @@ using UnityEngine;
 
 public class flyButton : MonoBehaviour
 {
-    public float birdJump = 8f;
+    public float balloonJump = 8f;
 
     public GameObject EndPanel;
+
+    private void Start()
+    {
+        // Rigidbody2D에 중력을 수동으로 설정
+        GetComponent<Rigidbody2D>().gravityScale = 1f;
+    }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-        { 
-            GetComponent<Rigidbody2D>().velocity = new Vector3(0, birdJump, 0); 
+        {
+            // 현재 속도를 초기화한 후에 점프
+            Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.velocity = Vector3.zero;
+            rb.velocity = new Vector3(0, balloonJump, 0);
         }
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag.CompareTo("Pipe_Ground") == 0)
