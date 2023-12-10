@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class ScoreUpdateDetect : MonoBehaviour
 {
+    // 트리거 충돌이 발생할 때 호출되는 메서드
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.CompareTo("Player") == 0) 
+        // 충돌한 객체의 태그가 "Player"인지 확인
+        if (collision.gameObject.tag.CompareTo("Player") == 0)
         {
+            // 플레이어가 트리거를 벗어났을 때, 게임 매니저의 스코어를 1 증가시킴
             GameManager.score += 1;
         }
     }
