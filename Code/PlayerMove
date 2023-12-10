@@ -1,33 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
-public class PlayerMove : MonoBehaviour
+public class EndPanelManager : MonoBehaviour
 {
-    public float jump = 10f;
-    public float jump2 = 12f;
+    // 게임 종료 시 표시할 현재 스코어, 최고 스코어, 새로운 이미지, 메달 등을 위한 변수들
+    public Text Score;
+    public Text BestScore;
+    public GameObject newImage;
+    public GameObject medal;
+    public Sprite gold_m;
+    public Sprite silver_m;
+    public Sprite bronze_m;
 
-    int jumpCount = 0;
-
-    public void Jump_Btn()
+    // 이 스크립트가 활성화될 때 호출되는 메서드
+    public void OnEnable()
     {
-        if (jumpCount == 0)
+        // 현재 스코어를 UI에 표시
+        Score.text = GameManager.score.ToString();
+
+        // 최고 스코어를 갱신하고, 새로운 이미지를 활성화 또는 비활성화
+        if (GameManager.bestScore < GameManager.score)
         {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, jump, 0);
-            jumpCount += 1;
+            GameManager.bestScore = GameManager.score;
+            newImage.SetActive(true);
         }
-        else if (jumpCount == 1)
+        else
         {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector3(0, jump2, 0);
-            jumpCount += 1;
+            newImage.SetActive(false);
+        }
+
+        // 최고 스코어를 UI에 표시
+        BestScore.text = GameManager.bestScore.ToString();
+
+        // 스코어에 따라 메달 이미지를 설정
+        if (GameManager.score >= 10)
+        {
+            medal.GetComponent<Image>().sprite = gold_m;
+        }
+        else if (GameManager.score >= 2)
+        {
+            medal.GetComponent<Image>().sprite = silver_m;
+        }
+        else
+        {
+            medal.GetComponent<Image>().sprite = bronze_m;
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    // "확인" 버튼이 눌렸을 때 호출되는 메서드
+    public void okBtn()
     {
-        if (collision.gameObject.tag.CompareTo("Land") == 0)
-        {
-            jumpCount = 0;
-        }
+        // 게임 매니저의 스코어를 초기화하고, 씬을 다시 불러옴
+        GameManager.score = 0;
+        SceneManager.LoadScene("SampleScene");
     }
 }
-
